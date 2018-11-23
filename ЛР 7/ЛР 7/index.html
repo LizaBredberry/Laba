@@ -1,0 +1,80 @@
+<html>
+  <head>
+    <script type="text/javascript" src="loadxmldoc.js"></script>
+    <style>
+      table, td, th {
+        border: 1px solid black;
+      }
+      table {
+        border-collapse: collapse;
+      }
+    </style>
+	<title> My table </title>
+  </head>
+  
+  <body>
+    <script type="text/javascript">
+     
+      xmlDoc = loadXMLDoc("gradeReport.xml");
+	  
+      gradesNames = {1:"Very bad", 2:"Bad", 3:"Satisfactory", 4:"Good", 5:"Excellent"};
+      headers = [" ", "Student", "Grade", "Grade name"];
+      data = [xmlDoc.getElementsByTagName("gradeRecord"),
+              xmlDoc.getElementsByTagName("student"),
+			  xmlDoc.getElementsByTagName("grade"),
+              xmlDoc.getElementsByTagName("grade")];
+      
+      body = document.getElementsByTagName("body")[0];
+      
+      table = document.createElement("table");
+      tableBody = document.createElement("tbody");
+      headersRow = document.createElement("tr");
+	  
+      for (i = 0; i < headers.length; i++) {
+        cell = document.createElement("th");
+        cellText = document.createTextNode(headers[i]);
+        cell.appendChild(cellText);
+        headersRow.appendChild(cell);
+      }
+      
+      tableBody.appendChild(headersRow);
+      
+      for (i = 0; i < data[0].length; i++) {
+        
+        row = document.createElement("tr");
+		
+        for (j = 0; j < data.length; j++) {
+        
+          cell = document.createElement("td");
+          cellText = null;
+          if (j == 0) {
+            cellText = document.createTextNode(data[j][i].getAttribute("id"));
+          } else 
+		  if (j == 1) {
+            cellText = document.createTextNode(data[j][i].firstChild.nodeValue);
+          } else 
+		  if (j==2) {
+			cellText = document.createTextNode(data[j][i].firstChild.nodeValue);
+		  } else
+		  {
+            cellText = document.createTextNode(gradesNames[data[j][i].firstChild.nodeValue]);
+          }
+          cell.appendChild(cellText);
+          row.appendChild(cell);
+        }
+   
+        tableBody.appendChild(row);
+		
+      }
+      
+      tableBody.style.color = 'blue'
+      table.appendChild(tableBody);
+	  table.align='center';
+	  table.style='font-size:30px';
+	   table.style.backgroundColor = 'pink';
+	  
+      body.appendChild(table);
+      
+    </script>
+  </body>
+</html>
